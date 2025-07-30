@@ -23,3 +23,27 @@
 - Nada más cargar la app, haz un fetch para obtener todos los paises del a api usando el hook [onMounted](https://vuejs.org/api/composition-api-lifecycle#onmounted)
 - Utiliza adecuadamente la directiva v-for para generar tantos `<div class="country-info-box">` como paises hemos recuperado de la API
 
+## Iteración 2
+
+- Vamos a hacer funcionar el selector de continentes
+- Vamos a necesitar crear un [estado derivado](https://vuejs.org/tutorial/#step-8)
+  - Si no hay ningún continente seleccionado, se deben mostrar todos los paises
+  - Si hay un continente seleccionado, hay que _filtrar_ todos los países que pertenecen a dicho continente
+  - Mira este [ejemplo de uso](https://github.com/omiras/exercises-basic-computed/blob/solution/2-qa-list/index.html)
+- Necesitarás usar la directiva v-model para el _select_ y asociar su valor a una nueva variable de estado
+- ¡NO te dejes el `.value`!
+
+## Iteración 3
+
+- Ahora también debería funcionar buscar por texto
+- Los pasos son similares a la iteración 2, pero ahora tenemos que pensar como ir "acumulando" los filtros, ya que debe funcionar tanto el _select_ como el _input_
+
+## Iteración 4
+
+- Al hacer click en cualquiera de los países, se debe mostrar el `<!-- <section id="country-details">`
+y ocultar el otro contenedor. (v-if....v-else)
+- Este es el aspecto aproximado que debe tener la vista de detalle al hacer clic en cualquier país:
+![detail](design\desktop-design-detail-light.jpg)
+- Ahora vamos a necesitar modificar la petición GET a la URL para traernos más campos
+- Crea una variable de estado para almacenar el país que ha sido seleccionado, y juega en torno a ella para mostrar la información requerida en al vista
+- No te olvides hacer funcionar el botón de "Back"
