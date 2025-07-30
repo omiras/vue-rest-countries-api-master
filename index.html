@@ -22,15 +22,16 @@
     </div>
   </header>
 
-  <main>
+  <main id="app">
     <section id="input-options-container">
       <div class="input-container">
         <i class="bi bi-search"></i>
-        <input id="input-field-country" type="text" placeholder="Search for a country..." />
+        <input v-model="search" id="input-field-country" type="text" placeholder="Search for a country..." />
       </div>
 
       <div id="region-selector-container">
-        <select id="continentSelection">
+        <!-- v-model nos sirve para hacer reactivo el valor del select en dos direcciones. Si cambia el valor del <select>, cambiará el valor de la variable de estgado 'continent'. Y si cambia el valor de la variable de estado 'continent', cambiará el valor del <select> -->
+        <select v-model="continent" id="continentSelection">
           <option value="">Select a continent</option>
           <option value="Africa">Africa</option>
           <option value="Americas">Americas</option>
@@ -42,23 +43,11 @@
     </section>
 
     <section id="countries-selection-box">
-      <div class="country-info-box">
-        <img src="URL_DE_LA_BANDERA">
-        <h2>NOMBRE_DEL_PAÍS</h2>
-        <p>Population: POBLACIÓN</p>
-        <p>Region: REGIÓN</p>
-      </div>
-        <div class="country-info-box">
-        <img src="URL_DE_LA_BANDERA">
-        <h2>NOMBRE_DEL_PAÍS</h2>
-        <p>Population: POBLACIÓN</p>
-        <p>Region: REGIÓN</p>
-      </div>
-        <div class="country-info-box">
-        <img src="URL_DE_LA_BANDERA">
-        <h2>NOMBRE_DEL_PAÍS</h2>
-        <p>Population: POBLACIÓN</p>
-        <p>Region: REGIÓN</p>
+      <div v-for="c in filteredCountries" class="country-info-box">
+        <img :src="c.flags.png" :alt="c.flags.alt">
+        <h2>{{ c.name.common }}</h2>
+        <p>Population: {{ c.population }}</p>
+        <p>Region: {{ c.region }}</p>
       </div>
     </section>
 
@@ -117,7 +106,78 @@
       </div>
     </section> -->
   </main>
-  
+
+  <script type="module">
+    import { createApp, ref, onMounted, computed } from 'https://unpkg.com/vue@3/dist/vue.esm-browser.js'
+
+    createApp({
+      setup() {
+        // Esta variable de estado va a contenedor todos los paises. La vamos a rellenar con todos los paises que vienen de la API
+        // Un valor incial adecuado es un array vació []
+        const countries = ref([])
+        
+        const continent = ref('')
+        const search = ref('')
+
+        const getCountries = async () => {
+          
+          // Hacer una petición GET a la API. 
+          const response = await fetch("https://restcountries.com/v3.1/all?fields=name,flags,region,population")
+
+          // Transformar el JSON en un array de objetos
+          const data = await response.json()
+
+          // Actualizar la variable de estado
+          countries.value = data
+
+        }
+
+        // La función que tu quieres crear la pasas como parámetro de la función 'computed'. El resultado es una propiedad computada
+        const filteredCountries = computed(() => {
+
+          // TODO: si existe un valor en la variable continent, debemos FILTRAR todos los paises de la variable countries y devolverlos. Cuidado, porque la propiedad "continents", de cada país, es un array. Debemos usar algún método de array para conseguir la funcionalidad
+
+          // PAra cada país de la variable de estado, tenemos que mirar si su propiedad 'continents' incluye el continente de la variable de estado 'continent'
+
+          // Si hay algún valor en la variable continent, este if se va a evaluar como true
+
+          // Declaro una variale con 'let' (porque la voy a ir 'machacando') y de entrada le asigno todos los paises disponibles 
+          let filteredList = countries.value
+
+          if (continent.value) {
+            
+            filteredList = filteredList.filter(c => c.region.includes(continent.value))
+          }
+
+          // TODO: Si hay algo escrito en search.value usar el método filter para devolver solamente aquellos paises cuyo nombre contenga el texto de search.value
+          if (search.value) {
+            filteredList = filteredList.filter((c)=> {
+              const regexp = new RegExp(search.value, "i")
+              return regexp.test(c.name.common)
+            })
+          }
+
+          // Si no hay filtros seleccionados
+          return filteredList
+        })
+
+        // Hook que se ejecuta cuando todo el DOM está cargado en memoria
+        // también podríamos dejarlo así: onMounted(getCountries)
+        onMounted(()=> {
+          getCountries()
+        })
+
+        // Todas las variables que devuelve la función setup() estan disponibles en el HTML 
+        return {
+          countries,
+          continent,
+          search,
+          filteredCountries,
+          getCountries
+        }
+      }
+    }).mount('#app')
+  </script>
 </body>
 
 </html>
