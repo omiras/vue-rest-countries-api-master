@@ -37,3 +37,13 @@
 
 - Ahora también debería funcionar buscar por texto
 - Los pasos son similares a la iteración 2, pero ahora tenemos que pensar como ir "acumulando" los filtros, ya que debe funcionar tanto el _select_ como el _input_
+
+## Iteración 4
+
+- Al hacer click en cualquiera de los países, se debe mostrar el `<!-- <section id="country-details">`
+y ocultar el otro contenedor. (v-if....v-else)
+- Este es el aspecto aproximado que debe tener la vista de detalle al hacer clic en cualquier país:
+![detail](design\desktop-design-detail-light.jpg)
+- Ahora vamos a necesitar modificar la petición GET a la URL para traernos más campos
+- Crea una variable de estado para almacenar el país que ha sido seleccionado, y juega en torno a ella para mostrar la información requerida en al vista
+- No te olvides hacer funcionar el botón de "Back"
