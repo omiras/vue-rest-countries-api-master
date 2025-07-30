@@ -20,5 +20,5 @@
 
 - Declara una variable de estado para almacenar todos los paises
 - Nada más cargar la app, haz un fetch para obtener todos los paises del a api usando el hook [onMounted](https://vuejs.org/api/composition-api-lifecycle#onmounted)
-- Utiliza adecuadamente la directiva v-for para generar tantos 
+- Utiliza adecuadamente la directiva v-for para generar tantos `<div class="country-info-box">` como paises hemos recuperado de la API
 
