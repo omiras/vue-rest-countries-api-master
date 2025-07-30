@@ -36,4 +36,4 @@
 ## Iteración 3
 
 - Ahora también debería funcionar buscar por texto
-- Los pasos son similares a la
+- Los pasos son similares a la iteración 2, pero ahora tenemos que pensar como ir "acumulando" los filtros, ya que debe funcionar tanto el _select_ como el _input_
